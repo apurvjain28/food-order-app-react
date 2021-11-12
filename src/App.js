@@ -1,12 +1,24 @@
 import Header from "./components/Layout/Header";
 import Meals from "./components/Meals/Meals";
+import Cart from "./components/Cart/Cart";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const [isModalVisible, setModalVisible] = useState(true);
+
+  const closeButtonHandler = () => {
+    setModalVisible(false);
+  };
+
+  const cartButtonHandler = () => {
+    setModalVisible(true);
+  };
+
   return (
     <React.Fragment>
-      <Header />
+      <Cart isCartVisible={isModalVisible} closeCart={closeButtonHandler} />
+      <Header openCart={cartButtonHandler} />
       <main>
         <Meals />
       </main>

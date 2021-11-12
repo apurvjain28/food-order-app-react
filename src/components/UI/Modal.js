@@ -2,26 +2,28 @@ import React from "react";
 import ReactDOM from "react-dom";
 import classes from "./Modal.module.css";
 
-const Modal = () => {
+const Modal = (props) => {
   const Backdrop = () => {
     return <div className={classes.backdrop}></div>;
   };
 
   const ModalOverlay = () => {
-    return <div className={classes.modal}></div>;
+    return (
+      <div className={classes.modal}>
+        <div className={classes.content}>{props.children}</div>
+      </div>
+    );
   };
-
-  const isModalVisible = true;
 
   return (
     <React.Fragment>
       {ReactDOM.createPortal(
-        <Backdrop />,
-        document.getElementById("backdrop-root")
+        props.isModalVisible && <Backdrop />,
+        document.getElementById("overlays")
       )}
       {ReactDOM.createPortal(
-        <ModalOverlay />,
-        document.getElementById("overlay-root")
+        props.isModalVisible && <ModalOverlay>{props.children}</ModalOverlay>,
+        document.getElementById("overlays")
       )}
       {/* {isModalVisible && <Backdrop />}
       {isModalVisible && <ModalOverlay />} */}

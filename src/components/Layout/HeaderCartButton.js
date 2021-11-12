@@ -4,16 +4,10 @@ import CartIcon from "../Cart/CartIcon";
 
 // import Modal from "../UI/Modal";
 
-const HeaderCartButton = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const modalHandler = () => {
-    setModalVisible(true);
-  };
-
+const HeaderCartButton = (props) => {
   return (
     <React.Fragment>
-      <button className={classes.button} onClick={modalHandler}>
+      <button className={classes.button} onClick={props.openCart}>
         <span className={classes.icon}>
           <CartIcon />
         </span>
