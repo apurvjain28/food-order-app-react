@@ -1,7 +1,7 @@
 import React from "react";
 import MealItem from "./MealItem/MealItem";
-import MealForm from "./MealItem/MealForm";
 import classes from "./MealAvailable.module.css";
+import Card from "../UI/Card";
 
 const MealAvailable = () => {
   const DUMMY_MEALS = [
@@ -32,23 +32,23 @@ const MealAvailable = () => {
   ];
 
   return (
-    <div className={classes.meals}>
-      <ul>
-        {DUMMY_MEALS.map((meal) => {
-          return (
-            <React.Fragment>
+    <section className={classes.meals}>
+      <Card>
+        <ul>
+          {DUMMY_MEALS.map((meal) => {
+            return (
               <MealItem
                 key={meal.id}
+                id={meal.id}
                 name={meal.name}
                 description={meal.description}
                 price={meal.price}
               ></MealItem>
-              <MealForm />
-            </React.Fragment>
-          );
-        })}
-      </ul>
-    </div>
+            );
+          })}
+        </ul>
+      </Card>
+    </section>
   );
 };
 

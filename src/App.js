@@ -1,5 +1,5 @@
 import Header from "./components/Layout/Header";
-import MealAvailable from "./components/Meals/MealAvailable";
+import Meals from "./components/Meals/Meals";
 
 import React from "react";
 
@@ -7,7 +7,9 @@ function App() {
   return (
     <React.Fragment>
       <Header />
-      <MealAvailable />
+      <main>
+        <Meals />
+      </main>
     </React.Fragment>
   );
 }
