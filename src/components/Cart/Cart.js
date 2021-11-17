@@ -6,17 +6,27 @@ import CartItem from "./CartItem";
 
 const Cart = (props) => {
   var cartCtx = useContext(CartContext);
+  const hasItem = cartCtx.items.length > 0;
+
+  const cartItemAddHandler = (item) => {
+    cartCtx.addItem({ ...item, amount: 1 });
+  };
+
+  const cartItemRemoveHandler = (id) => {
+    cartCtx.removeItem(id);
+  };
 
   const cartItems = (
     <ul className={classes["cart-items"]}>
       {cartCtx.items.map((item) => (
         <li>
           <CartItem
+            key={item.id}
             name={item.name}
             price={item.price}
             amount={item.amount}
-            onAdd={item.addItem}
-            onRemove={item.removeItem}
+            onAdd={cartItemAddHandler.bind(null, item)}
+            onRemove={cartItemRemoveHandler.bind(null, item.id)}
           />
         </li>
       ))}
@@ -25,16 +35,16 @@ const Cart = (props) => {
 
   return (
     <Modal closeCart={props.closeCart}>
-      {cartCtx.items.length ? cartItems : <h3>Add item in Cart</h3>}
+      {hasItem ? cartItems : <h3>Add item in Cart</h3>}
       <div className={classes.total}>
         <span>Total Amount</span>
-        <span>{cartCtx.totalAmount}</span>
+        <span>{cartCtx.totalAmount.toFixed(2)}</span>
       </div>
       <div className={classes.actions}>
         <button className={classes["button--alt"]} onClick={props.closeCart}>
           Close
         </button>
-        <button className={classes.button}>Order</button>
+        {hasItem && <button className={classes.button}>Order</button>}
       </div>
     </Modal>
   );
