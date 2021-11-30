@@ -3,6 +3,7 @@ import classes from "./Cart.module.css";
 import Modal from "../UI/Modal";
 import CartContext from "../../store/cart-context";
 import CartItem from "./CartItem";
+import CheckoutForm from "./Checkout/CheckoutForm";
 
 const Cart = (props) => {
   var cartCtx = useContext(CartContext);
@@ -33,6 +34,10 @@ const Cart = (props) => {
     </ul>
   );
 
+  const orderHandler = () => {
+    return console.log("Form generated");
+  };
+
   return (
     <Modal closeCart={props.closeCart}>
       {hasItem ? cartItems : <h3>Add item in Cart</h3>}
@@ -44,7 +49,11 @@ const Cart = (props) => {
         <button className={classes["button--alt"]} onClick={props.closeCart}>
           Close
         </button>
-        {hasItem && <button className={classes.button}>Order</button>}
+        {hasItem && (
+          <button className={classes.button} onClick={orderHandler}>
+            Order
+          </button>
+        )}
       </div>
     </Modal>
   );
