@@ -1,6 +1,7 @@
 import useInput from "../../../hooks/use-input";
+import classes from "./CheckoutForm.module.css";
 
-const CheckoutForm = () => {
+const CheckoutForm = (props) => {
   const {
     value: enteredName,
     isValueValid: enteredNameIsValid,
@@ -19,34 +20,93 @@ const CheckoutForm = () => {
     reset: resetEmailInput,
   } = useInput((value) => value.trim().includes("@"));
 
+  const {
+    value: enteredStreet,
+    isValueValid: enteredStreetIsValid,
+    hasError: streetInputIsInvalid,
+    valueChangeHandler: streetChangedHandler,
+    inputBlurHandler: streetBlurHandler,
+    reset: resetStreetInput,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: enteredPostal,
+    isValueValid: enteredPostalIsValid,
+    hasError: postalInputIsInvalid,
+    valueChangeHandler: postalChangedHandler,
+    inputBlurHandler: postalBlurHandler,
+    reset: resetPostalInput,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: enteredCity,
+    isValueValid: enteredCityIsValid,
+    hasError: cityInputIsInvalid,
+    valueChangeHandler: cityChangedHandler,
+    inputBlurHandler: cityBlurHandler,
+    reset: resetCityInput,
+  } = useInput((value) => value.trim() !== "");
+
   let formIsValid = false;
 
-  if (enteredNameIsValid && enteredEmailIsValid) {
+  if (
+    enteredNameIsValid &&
+    enteredEmailIsValid &&
+    enteredStreetIsValid &&
+    enteredPostalIsValid &&
+    enteredCityIsValid
+  ) {
     formIsValid = true;
   }
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
 
-    if (!enteredNameIsValid || !enteredEmailIsValid) return;
+    if (
+      !enteredNameIsValid ||
+      !enteredEmailIsValid ||
+      !enteredStreetIsValid ||
+      !enteredPostalIsValid ||
+      !enteredCityIsValid
+    )
+      return;
 
+    // submit data
     //console.log(enteredName, enteredEmail);
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postal: enteredPostal,
+    });
 
     // nameInputRef.current.value = ''; => NOT IDEAL, DON'T MANIPULATE THE DOM
     resetNameInput();
     resetEmailInput();
+    resetStreetInput();
+    resetPostalInput();
+    resetCityInput();
   };
 
-  const nameInputClass = nameInputIsInvalid
-    ? "form-control invalid"
-    : "form-control";
+  const nameInputClass = `${classes.control} ${
+    nameInputIsInvalid ? classes.invalid : ""
+  }`;
 
-  const emailInputClass = emailInputIsInvalid
-    ? "form-control invalid"
-    : "form-control";
+  const emailInputClass = `${classes.control} ${
+    emailInputIsInvalid ? classes.invalid : ""
+  }`;
+  const streetInputClass = `${classes.control} ${
+    streetInputIsInvalid ? classes.invalid : ""
+  }`;
+  const postalInputClass = `${classes.control} ${
+    postalInputIsInvalid ? classes.invalid : ""
+  }`;
+  const cityInputClass = `${classes.control} ${
+    cityInputIsInvalid ? classes.invalid : ""
+  }`;
 
   return (
-    <form onSubmit={formSubmissionHandler}>
+    <form className={classes.form} onSubmit={formSubmissionHandler}>
       <div className={nameInputClass}>
         <label htmlFor="name">Your Name</label>
         <input
@@ -57,7 +117,7 @@ const CheckoutForm = () => {
           value={enteredName}
         />
         {nameInputIsInvalid && (
-          <p className="error-text">Name must be non-empty</p>
+          <p className={classes["error-text"]}>Name must be non-empty</p>
         )}
       </div>
       <div className={emailInputClass}>
@@ -70,11 +130,59 @@ const CheckoutForm = () => {
           value={enteredEmail}
         />
         {emailInputIsInvalid && (
-          <p className="error-text">Email must have @ in email Id</p>
+          <p className={classes["error-text"]}>Email must have @ in email Id</p>
         )}
       </div>
-      <div className="form-actions">
-        <button disabled={!formIsValid}>Submit</button>
+
+      <div className={streetInputClass}>
+        <label htmlFor="street">Street</label>
+        <input
+          type="text"
+          id="street"
+          onChange={streetChangedHandler}
+          onBlur={streetBlurHandler}
+          value={enteredStreet}
+        />
+        {streetInputIsInvalid && (
+          <p className={classes["error-text"]}>Street must be non-empty</p>
+        )}
+      </div>
+
+      <div className={postalInputClass}>
+        <label htmlFor="postal">Postal</label>
+        <input
+          type="text"
+          id="postal"
+          onChange={postalChangedHandler}
+          onBlur={postalBlurHandler}
+          value={enteredPostal}
+        />
+        {postalInputIsInvalid && (
+          <p className={classes["error-text"]}>Postal must be non-empty</p>
+        )}
+      </div>
+
+      <div className={cityInputClass}>
+        <label htmlFor="city">city</label>
+        <input
+          type="text"
+          id="city"
+          onChange={cityChangedHandler}
+          onBlur={cityBlurHandler}
+          value={enteredCity}
+        />
+        {cityInputIsInvalid && (
+          <p className={classes["error-text"]}>City must be non-empty</p>
+        )}
+      </div>
+
+      <div className={classes.actions}>
+        <button type="button" onClick={props.onCancel}>
+          Cancel
+        </button>
+        <button className={classes.submit} disabled={!formIsValid}>
+          Confirm
+        </button>
       </div>
     </form>
   );

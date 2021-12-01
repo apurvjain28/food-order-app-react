@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 
 // the parameter should tell whether to post or get request
 // applyData is function: on what should happen to data once fetched
